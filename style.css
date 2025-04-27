@@ -1,3 +1,31 @@
+/* Colors from https://github.com/bluz71/vim-moonfly-colors */
+
 body {
   font-family: monospace;
+  background-color: #080808;
+  color: #c6c6c6;
+  font-size: 15px;
+}
+
+a {
+  color: #80a0ff;
+}
+
+#title {
+  font-size: 35px;
+}
+
+.blog-item {
+  width: 400px;
+  background-color: #323437;
+  padding: 20px;
+}
+
+.blog-title {
+  font-size: 18px;
+}
+
+#main {
+  margin: auto;
+  width: 50%;
 }
