@@ -17,11 +17,9 @@ INDEX_TEMPLATE="""
 """
 
 def generate_article_div(url: str, title: str) -> str:
-    return f"""
-<div class=\"blog-item\">
-    <a class=\"blog-title\" href=\"{url}\">{title}<a>
-</div>
-"""
+    return f"""<div class=\"blog-item\">
+        <a class=\"blog-title\" href=\"{url}\">{title}<a>
+      </div>"""
 
 def main():
     articles = ""
@@ -29,6 +27,8 @@ def main():
     articles += generate_article_div("test", "test");
 
     html = INDEX_TEMPLATE
-    html.replace("#ARTICLES", articles)
+    html = html.replace("#ARTICLES", articles)
+
+    print(html)
 
 main()
