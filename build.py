@@ -1,3 +1,5 @@
+import os
+import re
 
 INDEX_TEMPLATE="""
 <!DOCTYPE html>
@@ -24,11 +26,21 @@ def generate_article_div(url: str, title: str) -> str:
 def main():
     articles = ""
 
-    articles += generate_article_div("test", "test");
+    for file in os.listdir("blogs"):
+        fullpath = f"blogs/{file}"
+        with open(fullpath) as f:
+            data = f.read();
+
+            title = re.findall(r'id=["\']title["\'][^>]*>(.*?)</', data)[0]
+
+            articles += generate_article_div(fullpath, title);
 
     html = INDEX_TEMPLATE
     html = html.replace("#ARTICLES", articles)
 
     print(html)
+
+    with open("index.html", "w+") as f:
+        f.write(html)
 
 main()
