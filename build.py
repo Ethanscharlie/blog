@@ -1,6 +1,7 @@
 import os
 import re
 
+MAIN_SITE_URL = "https://ethanscharlie.github.io/blog/"
 INDEX_TEMPLATE="""
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,19 @@ INDEX_TEMPLATE="""
   </body>
 </html>
 """
+RSS_TEMPLATE="""
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+
+<channel>
+  <title>Hadley's Blog</title>
+  <link>https://ethanscharlie.github.io/</link>
+  <description>Yup</description>
+  #ARTICLES
+</channel>
+
+</rss> 
+"""
 
 def generate_article_div(url: str, title: str, desc: str) -> str:
     return f"""<div class=\"blog-item\">
@@ -24,8 +38,18 @@ def generate_article_div(url: str, title: str, desc: str) -> str:
         <p class=\"blog-desc\">{desc}</p>
       </div>"""
 
+def generate_article_rss(url: str, title: str, desc: str) -> str:
+    return f"""
+  <item>
+    <title>{title}</title>
+    <link>{MAIN_SITE_URL}{url}</link>
+    <description>{desc}</description>
+  </item>
+    """
+
 def main():
     articles = ""
+    rss_articles = ""
 
     for file in os.listdir("blogs"):
         fullpath = f"blogs/{file}"
@@ -36,13 +60,17 @@ def main():
             desc = re.findall(r'id=["\']desc["\'][^>]*>(.*?)</', data)[0]
 
             articles += generate_article_div(fullpath, title, desc);
+            rss_articles += generate_article_rss(fullpath, title, desc);
 
-    html = INDEX_TEMPLATE
-    html = html.replace("#ARTICLES", articles)
+    html = INDEX_TEMPLATE.replace("#ARTICLES", articles)
+    rss = RSS_TEMPLATE.replace("#ARTICLES", rss_articles)
 
-    print(html)
+    print("Writing to files...")
 
     with open("index.html", "w+") as f:
         f.write(html)
+
+    with open("rss", "w+") as f:
+        f.write(rss)
 
 main()
