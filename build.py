@@ -18,9 +18,10 @@ INDEX_TEMPLATE="""
 </html>
 """
 
-def generate_article_div(url: str, title: str) -> str:
+def generate_article_div(url: str, title: str, desc: str) -> str:
     return f"""<div class=\"blog-item\">
         <a class=\"blog-title\" href=\"{url}\">{title}<a>
+        <p class=\"blog-desc\">{desc}</p>
       </div>"""
 
 def main():
@@ -32,8 +33,9 @@ def main():
             data = f.read();
 
             title = re.findall(r'id=["\']title["\'][^>]*>(.*?)</', data)[0]
+            desc = re.findall(r'id=["\']desc["\'][^>]*>(.*?)</', data)[0]
 
-            articles += generate_article_div(fullpath, title);
+            articles += generate_article_div(fullpath, title, desc);
 
     html = INDEX_TEMPLATE
     html = html.replace("#ARTICLES", articles)
